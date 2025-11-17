@@ -3,7 +3,6 @@
 <!-- Tech Badges -->
 <div align="center">
   <img src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React Native Badge">
-  <img src="https://img.shields.io/badge/javascript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript Badge">
   <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React Badge">
   <img src="https://img.shields.io/badge/python-%233776AB.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python Badge">
   <img src="https://img.shields.io/badge/fastapi-%23000000.svg?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI Badge">
@@ -326,18 +325,5 @@ This project is part of a university course project (SWE401 - Software Engineeri
 
 ---
 
-## 🙏 Acknowledgments
 
-- Expo team for the excellent React Native framework
-- FastAPI for the robust backend framework
-- Firebase for backend services
-- OpenAI for AI capabilities
-- Ultralytics for YOLOv8 models
-- React Native community for amazing libraries and support
 
----
-
-<div align="center">
-  <p><strong>SehhaMate</strong> - Empowering Health Through Artificial Intelligence</p>
-  <p style="color: #666; font-size: 14px;">Built with ❤️ for better health and wellness</p>
-</div>
