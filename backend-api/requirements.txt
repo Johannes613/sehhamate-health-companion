@@ -1,0 +1,19 @@
+# requirements.txt
+fastapi==0.103.1
+uvicorn
+python-multipart
+starlette
+numpy
+opencv-python
+ultralytics
+
+torch
+torchvision
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+Pillow
+requests
+pyyaml
+python-dotenv
+pandas
+pydantic-settings
