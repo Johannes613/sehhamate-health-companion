@@ -1,49 +1,198 @@
-# SehhaMate Health Companion
+# SehhaMate: AI-Powered Health & Wellness Platform
 
-A comprehensive health management platform designed to help users manage their diabetes, track nutrition, monitor medications, and maintain a healthy lifestyle. The platform consists of a mobile application, backend API, and landing page.
+<!-- Tech Badges -->
+<div align="center">
+  <img src="https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React Native Badge">
+  <img src="https://img.shields.io/badge/javascript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript Badge">
+  <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React Badge">
+  <img src="https://img.shields.io/badge/python-%233776AB.svg?style=for-the-badge&logo=python&logoColor=white" alt="Python Badge">
+  <img src="https://img.shields.io/badge/fastapi-%23000000.svg?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI Badge">
+  <img src="https://img.shields.io/badge/pytorch-%23EE4C2C.svg?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch Badge">
+  <img src="https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white" alt="OpenCV Badge">
+  <img src="https://img.shields.io/badge/yolov8-%2300FFFF.svg?style=for-the-badge&logo=yolo&logoColor=black" alt="YOLOv8 Badge">
+</div>
 
-## 🏗️ Project Structure
+**SehhaMate** is a comprehensive AI-powered health and wellness platform that combines mobile app technology with advanced machine learning to provide intelligent food analysis, medication safety checks, and personalized health insights. The platform features a React Native mobile app for on-the-go health monitoring and a professional React landing page for user engagement.
+
+## 🌐 Live Links
+
+- **Landing Page**: [https://health-sphere-ai.vercel.app/](https://health-sphere-ai.vercel.app/)
+- **Mobile App**: Available on Expo Go
+
+## 📱 Live Preview
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4ca8101e-c6a9-4d42-b48e-fe6f2859ad63" width="200" height="500" />
+  <img src="https://github.com/user-attachments/assets/681d5104-957e-4499-9a58-bc52cf7ef8ca" width="200" height="500" />
+  <img src="https://github.com/user-attachments/assets/c5eced95-479f-4ecd-b666-03035e6e7da0" width="200" height="500" />
+  <img src="https://github.com/user-attachments/assets/c3e85460-c58c-435a-a664-ab6cf8d9603e" width="200" height="500" />
+</div>
+
+<div align="center">
+  <img width="600" height="600" alt="SehhaMate Platform" src="https://github.com/user-attachments/assets/8cdf9282-be7a-400c-9af7-14f05cdd6d8f" />
+</div>
+
+## 🏗️ Platform Overview
+
+The platform consists of three main components:
+
+- **Mobile App**: React Native application with AI-powered scanning capabilities
+- **Landing Page**: Professional React website showcasing SehhaMate features
+- **Backend API**: FastAPI-based machine learning API for food and medication analysis
+
+---
+
+## 🎯 The Problem
+
+- **Food Safety & Nutrition**: Users struggle to identify food items, track nutritional content, and make informed dietary choices.
+- **Medication Safety**: Lack of easy access to medication information, potential drug interactions, and dosage warnings.
+- **Health Monitoring**: Difficulty in tracking daily health metrics and maintaining wellness routines.
+- **Accessibility**: Limited access to professional health guidance and personalized wellness recommendations.
+
+**SehhaMate** addresses these challenges by providing an integrated platform that combines computer vision, machine learning, and user-friendly interfaces to deliver immediate health insights and guidance.
+
+---
+
+## ✨ Core Features
+
+### 1. AI-Powered Food Scanner
+
+- **Real-time Food Detection**: Instantly identify food items using advanced computer vision and machine learning models.
+- **Nutritional Analysis**: Comprehensive breakdown of calories, macronutrients, vitamins, and minerals for detected foods.
+- **Dietary Tracking**: Monitor daily food intake and maintain nutritional balance with detailed analytics.
+- **Smart Recommendations**: AI-powered suggestions for healthier alternatives and meal planning.
+
+### 2. Medication Safety Scanner
+
+- **Medication Identification**: Scan medication packages to instantly access detailed information.
+- **Drug Interaction Checker**: Identify potential interactions with other medications and supplements.
+- **Dosage Warnings**: Receive important safety information and dosage recommendations.
+- **Side Effect Analysis**: Comprehensive overview of potential side effects and precautions.
+
+### 3. Health Chatbot
+
+- **AI-Powered Assistant**: Get instant health-related answers and guidance using OpenAI GPT integration.
+- **Personalized Recommendations**: Receive tailored health advice based on your profile and history.
+- **Bilingual Support**: Chat in English or Arabic for better accessibility.
+
+### 4. Analytics Dashboard
+
+- **Health Trends**: Track glucose levels, dietary compliance, and allergen exposures over time.
+- **Goal Management**: Set and monitor health goals with progress tracking.
+- **Insights**: AI-generated insights based on your health data.
+
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technologies Used |
+|-----------|------------------|
+| **Mobile App** | React Native, Expo, JavaScript, ImagePicker, Firebase |
+| **Landing Page** | React.js, Bootstrap 5, CSS3, JavaScript |
+| **Backend API** | Python, FastAPI, PyTorch, OpenCV, Ultralytics |
+| **Machine Learning** | Computer Vision, YOLO Models, Object Detection |
+| **Image Processing** | OpenCV, Pillow, Image Analysis, Feature Extraction |
+| **AI Services** | OpenAI GPT-4.1-mini, Custom Knowledge Base |
+| **Database** | Firebase Firestore, Firebase Authentication |
+| **Deployment** | Render (Backend), Vercel (Frontend), Expo (Mobile) |
+| **Version Control** | Git, GitHub |
+
+---
+
+## 🤖 AI Model Performance & Architecture
+
+### Model Performance Metrics
+
+- **Precision**: 86% - High accuracy in food item identification
+- **Recall**: Optimized for comprehensive food detection coverage
+- **F1-Score**: Balanced performance between precision and recall
+- **Inference Speed**: Real-time processing for mobile applications
+
+### Model Test Results
+
+<div align="center">
+  <img width="870" height="580" alt="Model Test Results" src="https://github.com/user-attachments/assets/504042b8-a637-4b2a-b4b8-554be40ef43f" />
+</div>
+
+### Model Architecture Details
+
+- **Base Model**: Advanced Convolutional Neural Network (CNN) architecture
+- **Training Data**: Extensive dataset of food images with nutritional annotations
+- **Transfer Learning**: Leverages pre-trained models for enhanced performance
+- **Data Augmentation**: Robust training with varied lighting, angles, and conditions
+- **Model Optimization**: Quantized for mobile deployment without performance loss
+
+### Technical Specifications
+
+- **Input Resolution**: Supports multiple image resolutions for flexibility
+- **Output Classes**: Comprehensive food categorization system
+- **Confidence Thresholds**: Configurable detection confidence levels
+- **Model Size**: Optimized for mobile deployment and fast inference
+
+### Performance Validation
+
+- **Test Dataset**: Rigorously validated on diverse food categories
+- **Cross-Validation**: K-fold validation ensuring model robustness
+- **Real-World Testing**: Validated in various lighting and environmental conditions
+- **Continuous Improvement**: Regular model updates based on user feedback
+
+---
+
+## 📁 Project Structure
 
 ```
 sehhamate-health-companion/
-├── backend-api/          # FastAPI backend service
-├── landing-page/         # React landing page
-└── sehhamate-mobile-app/ # React Native mobile application
+├── sehhamate-mobile-app/    # React Native mobile application
+│   ├── screens/             # App screens
+│   ├── components/          # Reusable components
+│   ├── services/            # API and business logic
+│   ├── navigation/          # Navigation setup
+│   └── contexts/            # React contexts
+├── landing-page/            # React landing page
+│   ├── src/
+│   │   ├── components/      # React components
+│   │   └── App.js           # Main app component
+│   └── public/              # Static assets
+└── backend-api/             # FastAPI backend
+    ├── app/
+    │   ├── ml/              # Machine learning models
+    │   ├── api/             # API endpoints
+    │   └── core/            # Core configuration
+    ├── main.py              # FastAPI application
+    └── requirements.txt     # Python dependencies
 ```
 
-## 📱 Mobile Application (sehhamate-mobile-app)
+### Key Components
 
-A React Native mobile application built with Expo that provides comprehensive health management features.
+- **FoodScannerScreen.js**: Core scanning functionality with AI integration
+- **MedicationScannerScreen.js**: Medication safety checking and analysis
+- **HealthChatbotScreen.js**: AI-powered health assistant
+- **AnalyticsDashboardScreen.js**: Health analytics and insights
+- **Machine Learning Models**: Food detection and medication analysis algorithms
+- **RESTful API**: Secure endpoints for health data processing
+- **Responsive UI**: Cross-platform compatible user interfaces
 
-### Features
+---
 
-- **Food Scanner**: AI-powered food recognition and nutrition analysis
-- **Medication Safety Checker**: Medication identification and interaction analysis
-- **Health Chatbot**: AI-powered health assistant with OpenAI integration
-- **Analytics Dashboard**: Comprehensive health analytics and insights
-- **Activity Tracking**: Track physical activities and exercise
-- **Nutrition Logging**: Log meals and track daily nutrition
-- **Goal Management**: Set and track health goals
-- **Profile Management**: Personalized user profiles with health information
+## 🚀 Getting Started Locally
 
-### Tech Stack
+### Prerequisites
 
-- **Framework**: React Native with Expo
-- **Navigation**: React Navigation
-- **State Management**: React Context API
-- **Backend**: Firebase (Authentication, Firestore, Storage)
-- **AI Services**: OpenAI (GPT-4.1-mini)
-- **UI Components**: Custom components with React Native
+- Node.js (v16+)
+- npm or yarn
+- Expo CLI
+- Python 3.8+ (for backend)
+- FastAPI, PyTorch, OpenCV, Ultralytics and required Python packages
 
-### Getting Started
+### Mobile App Setup
 
-1. **Install Dependencies**
+1. **Navigate to mobile app directory:**
    ```bash
    cd sehhamate-mobile-app
    npm install
    ```
 
-2. **Environment Setup**
+2. **Set up environment variables:**
    Create a `.env` file in the `sehhamate-mobile-app` directory:
    ```env
    EXPO_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
@@ -54,168 +203,108 @@ A React Native mobile application built with Expo that provides comprehensive he
    EXPO_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
    ```
 
-3. **Run the Application**
+3. **Start the Expo development server:**
    ```bash
-   npm start
-   # or
-   npm run android  # for Android
-   npm run ios      # for iOS
-   npm run web      # for web
+   npx expo start
    ```
 
-### Key Dependencies
+4. **Scan QR code with Expo Go app on your device**
 
-- `expo`: ^54.0.24
-- `react-native`: 0.76.5
-- `@react-navigation/native`: ^6.1.18
-- `firebase`: ^11.1.0
-- `expo-image-picker`: ~16.0.4
-- `expo-linear-gradient`: ~14.0.1
-- `react-native-chart-kit`: ^6.12.0
+### Landing Page Setup
 
-## 🔧 Backend API (backend-api)
-
-A FastAPI-based backend service that provides food detection and analysis capabilities using YOLOv8 machine learning models.
-
-### Features
-
-- **Food Detection**: YOLOv8-based food recognition
-- **Nutrition Analysis**: Detailed nutrition information for detected foods
-- **RESTful API**: Clean API endpoints for mobile app integration
-
-### Tech Stack
-
-- **Framework**: FastAPI
-- **ML Model**: YOLOv8 (Ultralytics)
-- **Image Processing**: OpenCV, Pillow
-- **Deployment**: Docker, Render.com
-
-### Getting Started
-
-1. **Install Dependencies**
-   ```bash
-   cd backend-api
-   pip install -r requirements.txt
-   ```
-
-2. **Run the Server**
-   ```bash
-   python main.py
-   # or
-   uvicorn main:app --reload
-   ```
-
-3. **API Documentation**
-   Once the server is running, visit:
-   - Swagger UI: `http://localhost:8000/docs`
-   - ReDoc: `http://localhost:8000/redoc`
-
-### Key Dependencies
-
-- `fastapi`: 0.103.1
-- `uvicorn`: ASGI server
-- `ultralytics`: YOLOv8 models
-- `opencv-python`: Image processing
-- `torch`: PyTorch for ML models
-
-## 🌐 Landing Page (landing-page)
-
-A modern, responsive landing page built with React to showcase the SehhaMate Health Companion platform.
-
-### Features
-
-- **Responsive Design**: Mobile-first approach
-- **Modern UI**: Bootstrap 5 styling
-- **Interactive Components**: React-based interactive elements
-
-### Tech Stack
-
-- **Framework**: React
-- **Styling**: Bootstrap 5
-- **Icons**: React Icons
-
-### Getting Started
-
-1. **Install Dependencies**
+1. **Navigate to landing page directory:**
    ```bash
    cd landing-page
    npm install
    ```
 
-2. **Run Development Server**
+2. **Start the development server:**
    ```bash
    npm start
    ```
 
-3. **Build for Production**
+3. **Open http://localhost:3000 in your browser**
+
+### Backend API Setup
+
+1. **Navigate to backend directory:**
    ```bash
-   npm run build
+   cd backend-api
+   pip install -r requirements.txt
    ```
 
-## 🔐 Environment Variables
+2. **Start the FastAPI server:**
+   ```bash
+   uvicorn main:app --reload
+   # or
+   python main.py
+   ```
 
-### Mobile App (.env)
-```env
-EXPO_PUBLIC_FIREBASE_API_KEY=
-EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=
-EXPO_PUBLIC_FIREBASE_PROJECT_ID=
-EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=
-EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-EXPO_PUBLIC_FIREBASE_APP_ID=
-```
+3. **API will be available at http://localhost:8000**
+   - Swagger UI: http://localhost:8000/docs
+   - ReDoc: http://localhost:8000/redoc
 
-### Backend API
-Create a `.env` file in the `backend-api` directory if needed for additional configuration.
+---
 
-## 📦 Deployment
+## 🔌 API Endpoints
 
-### Mobile App
-The mobile app can be built and deployed using Expo Application Services (EAS):
-```bash
-cd sehhamate-mobile-app
-eas build --platform android
-eas build --platform ios
-```
+### Health & Status
+- **GET /health** - API health check and status
 
-### Backend API
-The backend API can be deployed using Docker or directly to Render.com. See `backend-api/DEPLOYMENT_GUIDE.md` for detailed instructions.
+### Machine Learning
+- **POST /api/v1/ml/detect-food** - Food detection and analysis
+- **POST /api/v1/ml/analyze-meal** - Comprehensive meal analysis
 
-### Landing Page
-The landing page can be deployed to any static hosting service (Netlify, Vercel, etc.):
-```bash
-cd landing-page
-npm run build
-# Deploy the 'build' directory
-```
+---
 
-## 🧪 Testing
+## 📱 Features in Detail
 
-### Mobile App
-```bash
-cd sehhamate-mobile-app
-npm test
-```
+### Food Scanner
+- Real-time food recognition using YOLOv8 models
+- Detailed nutritional breakdown
+- Allergen detection and warnings
+- Dietary compliance tracking
+- Meal logging and history
 
-### Backend API
-```bash
-cd backend-api
-pytest tests/
-```
+### Medication Safety Checker
+- Medication package scanning
+- Drug interaction analysis
+- Dosage and safety information
+- Side effects and warnings
+- Personalized risk assessment
 
-## 📝 Project Requirements
+### Health Chatbot
+- OpenAI GPT-4.1-mini integration
+- Bilingual support (English/Arabic)
+- Context-aware responses
+- Health recommendations
+- Lab result interpretation
 
-This project implements the following functional requirements:
+### Analytics Dashboard
+- Glucose level trends
+- Dietary compliance statistics
+- Allergen exposure frequency
+- Nutritional breakdowns
+- Goal progress tracking
+- AI-generated insights
 
-- **FR-2.1**: Food Scanner with AI-powered recognition
-- **FR-2.2**: Medication Safety Checker
-- **FR-2.3**: Health Chatbot with AI integration
-- **FR-2.4**: Scan History Management
-- **FR-5.1**: Analytics Dashboard
-- **FR-5.2**: Nutritional Breakdowns
-- **FR-5.3**: Goal Management
-- **FR-5.4**: Alert System
+---
+
+## 🔮 Future Enhancements
+
+- **Advanced AI Models**: Enhanced food recognition and nutritional analysis
+- **Health Tracking**: Integration with wearable devices and health apps
+- **Personalized Recommendations**: AI-driven health and wellness coaching
+- **Community Features**: User forums and health challenge systems
+- **Professional Integration**: Healthcare provider partnerships and telemedicine features
+- **Voice Interaction**: Voice commands for hands-free operation
+- **Offline Mode**: Core features available without internet connection
+
+---
 
 ## 🤝 Contributing
+
+We welcome contributions to SehhaMate! Please feel free to submit issues, feature requests, or pull requests to help improve the platform.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -223,13 +312,19 @@ This project implements the following functional requirements:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+---
+
 ## 📄 License
 
 This project is part of a university course project (SWE401 - Software Engineering).
 
+---
+
 ## 👥 Authors
 
 - **Yohannis Biniam** - [GitHub](https://github.com/Johannes613)
+
+---
 
 ## 🙏 Acknowledgments
 
@@ -238,11 +333,11 @@ This project is part of a university course project (SWE401 - Software Engineeri
 - Firebase for backend services
 - OpenAI for AI capabilities
 - Ultralytics for YOLOv8 models
-
-## 📞 Contact
-
-For questions or support, please open an issue in the repository.
+- React Native community for amazing libraries and support
 
 ---
 
-**Note**: This is an academic project developed for SWE401 - Software Engineering course.
+<div align="center">
+  <p><strong>SehhaMate</strong> - Empowering Health Through Artificial Intelligence</p>
+  <p style="color: #666; font-size: 14px;">Built with ❤️ for better health and wellness</p>
+</div>
