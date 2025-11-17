@@ -1,0 +1,38 @@
+class_names: []
+dataset_info:
+  test_images: 79
+  total_images: 1596
+  train_images: 1204
+  valid_images: 313
+exported_formats:
+- ONNX
+- TorchScript
+- TensorFlow Lite
+framework: YOLOv8
+image_size: 640
+model_name: HealthSphere_Food_Detection_v1
+model_size: yolov8n.pt
+num_classes: 30
+performance_metrics:
+  map50: 0.6798796300769635
+  map50_95: 0.5201824510604973
+  precision: 0.7390142984591633
+  recall: 0.6027321000815278
+training_config:
+  batch_size: 16
+  device: 0
+  epochs: 100
+  image_size: 640
+  model_size: yolov8n.pt
+  patience: 50
+  save_period: 10
+  workers: 8
+training_epochs: 100
+usage_instructions:
+  python_example: "\nfrom ultralytics import YOLO\n\n# Load model\nmodel = YOLO('best.pt')\n\
+    \n# Run inference\nresults = model('food_image.jpg', conf=0.25)\n\n# Process results\n\
+    for result in results:\n    boxes = result.boxes\n    for box in boxes:\n    \
+    \    class_id = int(box.cls[0])\n        confidence = float(box.conf[0])\n   \
+    \     class_name = model.names[class_id]\n        print(f\"Detected: {class_name}\
+    \ ({confidence:.3f})\")\n"
+

@@ -1,0 +1,34 @@
+# HealthSphere AI Food Detection Dataset Configuration
+# This file should be updated with the actual paths after training
+
+# Dataset paths (relative to the model directory)
+train: ../../data/Food_Dataset/train/images
+val: ../../data/Food_Dataset/valid/images
+test: ../../data/Food_Dataset/test/images
+
+# Number of classes
+nc: 30
+
+# Class names (30 food categories)
+names: [
+  'baby corn', 'bean sprout', 'black glutinous rice', 'boiled egg', 'brocoli',
+  'cabbage', 'carrot', 'chicken breast', 'chicken leg', 'corn', 'cucumber',
+  'dark green leaf vegetable', 'fried chicken', 'fried egg', 'fried tofu',
+  'green bean', 'green pepper', 'oily tofu', 'okra', 'pork chop', 'rice',
+  'salmon', 'sausage', 'scrambled eggs with tomatoes', 'shred chicken',
+  'shrimp', 'shrimp roll', 'stewed pork', 'sweet potato', 'tomato'
+]
+
+# Dataset metadata
+dataset_info:
+  name: "HealthSphere Food Detection Dataset"
+  version: "1.0"
+  description: "Custom food detection dataset with 30 food categories"
+  total_images: 1596
+  train_images: 1204
+  val_images: 313
+  test_images: 79
+  license: "CC BY 4.0"
+  created_by: "HealthSphere AI Team"
+
+

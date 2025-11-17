@@ -1,0 +1,283 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-secondary);
+}
+
+/* Focus and Selection Styles */
+button:focus,
+a:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Enhanced button hover effects */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+/* Custom selection color */
+::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+::-moz-selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Bootstrap Overrides for Dark Theme with Green Accents */
+.navbar {
+  background: rgba(15, 15, 15, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--text-white) !important;
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-white) !important;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+.navbar-toggler {
+  border-color: var(--primary-color);
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+}
+
+/* Custom Section Styles */
+.section-padding {
+  padding: 100px 0;
+}
+
+.section-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 1.5rem;
+  color: var(--text-white);
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1.4rem;
+  color: var(--text-gray);
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Custom Card Enhancements */
+.card {
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-body {
+  padding: 2.5rem;
+}
+
+/* Custom Form Styles */
+.form-control {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--border-color);
+  color: var(--text-white);
+  border-radius: 12px;
+  font-size: 1rem;
+  padding: 12px 16px;
+}
+
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary-color);
+  color: var(--text-white);
+  box-shadow: 0 0 0 0.2rem var(--shadow-color);
+}
+
+.form-control::placeholder {
+  color: var(--text-gray);
+}
+
+/* Custom Badge Styles */
+.badge {
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+/* Custom Alert Styles */
+.alert {
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-weight: 500;
+}
+
+/* Custom Modal Styles */
+.modal-content {
+  background: var(--dark-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+}
+
+/* Custom Table Styles */
+.table {
+  color: var(--text-white);
+}
+
+.table th {
+  border-top: none;
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-gray);
+  font-weight: 700;
+}
+
+.table td {
+  border-top: 1px solid var(--border-color);
+}
+
+/* Custom Pagination */
+.pagination .page-link {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-white);
+}
+
+.pagination .page-link:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Enhanced Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  color: var(--text-white);
+  line-height: 1.3;
+}
+
+p {
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--text-gray);
+}
+
+.lead {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.8;
+}
+
+/* Custom Button Variants */
+.btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 12px 24px;
+}
+
+.btn-primary:hover {
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Enhanced Shadows and Effects */
+.shadow-lg {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.shadow {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Custom Background Classes */
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+.bg-light {
+  background-color: var(--dark-secondary) !important;
+}
+
+/* Text Color Classes */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-secondary {
+  color: var(--secondary-color) !important;
+}
+
+.text-dark {
+  color: var(--text-white) !important;
+}
+
+.text-light {
+  color: var(--text-gray) !important;
+}
+
+.text-muted {
+  color: var(--text-gray) !important;
+}
