@@ -268,7 +268,7 @@ const IntroScreen = () => {
 
         {/* App Name */}
         <Animated.View style={[styles.textContainer, { opacity: textOpacityAnim }]}>
-          <Text style={styles.appName}>HealthSphere</Text>
+          <Text style={styles.appName}>Sehhamate</Text>
           <Text style={styles.appSubname}>AI</Text>
         </Animated.View>
 

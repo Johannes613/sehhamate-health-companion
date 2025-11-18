@@ -492,8 +492,6 @@ export default function ProfileScreen({ navigation }) {
       <ScreenHeader 
         title="Profile" 
         navigation={navigation}
-        rightIcon="settings-outline"
-        onRightPress={() => Alert.alert('Settings', 'Settings coming soon!')}
       />
       
       <ScrollView 

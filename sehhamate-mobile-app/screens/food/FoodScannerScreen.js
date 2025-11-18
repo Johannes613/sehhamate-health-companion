@@ -143,7 +143,7 @@ export default function FoodScannerScreen({ navigation }) {
         totalFiber: `${detectedFoods.reduce((sum, item) => sum + parseFloat(item.fiber || 0), 0).toFixed(1)}g`,
         totalSodium: `${detectedFoods.reduce((sum, item) => sum + parseFloat(item.sodium || 0), 0).toFixed(0)}mg`,
         detectionTime: 1.8,
-        processingModel: 'HealthSphere_Fridge_Detection_v1',
+        processingModel: 'Sehhamate_Fridge_Detection_v1',
         timestamp: new Date().toISOString(),
         nutritionLoaded: true,
         nutritionSource: 'USDA FoodData Central',
@@ -454,7 +454,7 @@ export default function FoodScannerScreen({ navigation }) {
           totalFiber: `${detectedFoods.reduce((sum, item) => sum + parseFloat(item.fiber || 0), 0).toFixed(1)}g`,
           totalSodium: `${detectedFoods.reduce((sum, item) => sum + parseFloat(item.sodium || 0), 0).toFixed(0)}mg`,
           detectionTime: 1.8,
-          processingModel: 'HealthSphere_Fridge_Detection_v1',
+          processingModel: 'Sehhamate_Fridge_Detection_v1',
           timestamp: new Date().toISOString(),
           nutritionLoaded: true,
           nutritionSource: 'USDA FoodData Central',
@@ -1557,7 +1557,7 @@ export default function FoodScannerScreen({ navigation }) {
         items: transformedItems,
         totalDetections: transformedItems.length,
         detectionTime: apiResult.processing_time || 1.0,
-        processingModel: apiResult.model || 'HealthSphere_Food_Detection_v1',
+        processingModel: apiResult.model || 'Sehhamate_Food_Detection_v1',
         timestamp: new Date().toISOString(),
         backendResponse: apiResult,
         // Note: Nutrition data will be populated separately
@@ -1643,7 +1643,7 @@ export default function FoodScannerScreen({ navigation }) {
       totalFiber: '5.0g',
       totalSodium: '143mg',
       detectionTime: 2.3,
-      processingModel: 'HealthSphere_Food_Detection_v2.1',
+      processingModel: 'Sehhamate_Food_Detection_v2.1',
       timestamp: new Date().toISOString(),
       nutritionLoaded: true,
       nutritionSource: 'USDA FoodData Central',
@@ -1999,7 +1999,7 @@ export default function FoodScannerScreen({ navigation }) {
               <Text style={styles.statusText}>AI Model Ready</Text>
             </View>
             <Text style={styles.statusDescription}>
-              Using HealthSphere Food Detection v1.0 with 30 food categories
+              Using Sehhamate Food Detection v1.0 with 30 food categories
             </Text>
           </View>
         </ScrollView>
@@ -2057,7 +2057,7 @@ export default function FoodScannerScreen({ navigation }) {
             </View>
             
             <Text style={styles.processingNote}>
-              Powered by HealthSphere AI
+              Powered by Sehhamate AI
             </Text>
             
 

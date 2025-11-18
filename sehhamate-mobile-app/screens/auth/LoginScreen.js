@@ -222,7 +222,7 @@ export default function LoginScreen({ navigation }) {
                   >
                     <Ionicons name="fitness-outline" size={32} color="#000" />
                   </LinearGradient>
-                  <Text style={styles.logoText}>HealthSphere</Text>
+                  <Text style={styles.logoText}>Sehhamate</Text>
                   <Text style={styles.logoSubtext}>AI</Text>
                 </View>
               </Animated.View>
@@ -375,7 +375,7 @@ export default function LoginScreen({ navigation }) {
 
                 {/* Sign Up Section */}
                 <View style={styles.signUpSection}>
-                  <Text style={styles.signUpText}>New to HealthSphere?</Text>
+                  <Text style={styles.signUpText}>New to Sehhamate?</Text>
                   <TouchableOpacity
                     style={styles.signUpButton}
                     onPress={handleSignUp}
