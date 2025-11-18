@@ -5,9 +5,11 @@
  * Using the same implementation as the working HTML test
  */
 
-// OpenAI API Configuration - API key should be set via environment variable
-const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY || '';
-const OPENAI_MODEL = 'gpt-4.1-mini';
+// OpenAI API Configuration
+// TODO: Replace with your OpenAI API key
+// Get your API key from: https://platform.openai.com/api-keys
+const OPENAI_API_KEY = 'YOUR_OPENAI_API_KEY_HERE';
+const OPENAI_MODEL = 'gpt-4o-mini';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 // Log API key on module load

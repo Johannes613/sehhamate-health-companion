@@ -250,99 +250,139 @@ export default function MedicationScannerScreen({ navigation }) {
     setError(null);
   };
 
-  // Fallback medication data
+  // Fallback medication data - Focused on Diabetes and Allergy Analysis
   const getFallbackMedicationData = () => {
     return {
       type: 'medication',
-      medication: 'Lisinopril',
-      genericName: 'Lisinopril',
-      brandNames: ['Zestril', 'Prinivil', 'Qbrelis'],
-      classification: 'ACE Inhibitor',
-      indication: 'Hypertension, Heart Failure, Heart Attack Prevention',
+      medication: 'Metformin',
+      genericName: 'Metformin Hydrochloride',
+      brandNames: ['Glucophage', 'Fortamet', 'Glumetza'],
+      classification: 'Biguanide Antidiabetic',
+      indication: 'Type 2 Diabetes Management, Prediabetes',
       ocrConfidence: 0.94,
-      ocrText: 'LISINOPRIL 10mg TABLET',
+      ocrText: 'METFORMIN 500mg TABLET',
       barcodeDetected: true,
       ndc: '00071-0123-01',
-      interactions: [
-        {
-          drug: 'Ibuprofen',
-          severity: 'Moderate',
-          description: 'May reduce blood pressure-lowering effects and increase risk of kidney problems',
-          recommendation: 'Monitor blood pressure closely and avoid long-term use together'
+      // Diabetes Compatibility Information
+      diabetesCompatibility: {
+        type1: {
+          compatible: false,
+          reason: 'Not recommended for Type 1 diabetes. Requires insulin therapy.',
+          risk: 'High'
         },
+        type2: {
+          compatible: true,
+          reason: 'First-line treatment for Type 2 diabetes. Helps lower blood glucose.',
+          risk: 'Low',
+          benefits: [
+            'Reduces blood glucose levels',
+            'May help with weight loss',
+            'Lowers risk of diabetes complications'
+          ]
+        },
+        prediabetes: {
+          compatible: true,
+          reason: 'Can help prevent progression to Type 2 diabetes.',
+          risk: 'Low'
+        },
+        bloodGlucoseImpact: 'Lowers blood glucose by reducing glucose production in liver',
+        monitoringRequired: ['Blood glucose levels', 'HbA1c every 3-6 months', 'Kidney function']
+      },
+      // Allergy Information
+      allergyAnalysis: {
+        containsAllergens: false,
+        commonAllergens: [],
+        allergicReactions: [
+          {
+            allergen: 'Metformin (rare)',
+            frequency: 'Very rare (<0.1%)',
+            symptoms: 'Skin rash, itching, difficulty breathing',
+            severity: 'Moderate to High',
+            recommendation: 'Discontinue immediately if allergic reaction occurs'
+          }
+        ],
+        crossReactivity: 'No known cross-reactivity with common food allergens',
+        lactoseWarning: 'Some formulations may contain lactose - check with pharmacist if lactose intolerant'
+      },
+      // Food Interactions for Diabetes
+      foodInteractions: [
         {
-          drug: 'Lithium',
+          food: 'Alcohol',
           severity: 'High',
-          description: 'May increase lithium levels in blood, leading to toxicity',
-          recommendation: 'Avoid combination or monitor lithium levels very closely'
+          description: 'Increases risk of lactic acidosis, especially with excessive alcohol consumption',
+          recommendation: 'Avoid or limit alcohol consumption while taking metformin'
         },
         {
-          drug: 'Potassium Supplements',
+          food: 'High-sugar foods',
           severity: 'Moderate',
-          description: 'May increase potassium levels, especially in patients with kidney disease',
-          recommendation: 'Monitor potassium levels and avoid high-potassium foods'
+          description: 'May cause blood glucose spikes if consumed in excess',
+          recommendation: 'Follow diabetes meal plan and monitor blood glucose after meals'
+        },
+        {
+          food: 'Vitamin B12',
+          severity: 'Moderate',
+          description: 'Long-term use may reduce vitamin B12 absorption',
+          recommendation: 'Consider B12 supplements and regular monitoring'
         }
       ],
-      sideEffects: {
-        common: [
-          'Dry cough (10-15% of patients)',
-          'Dizziness (5-10% of patients)',
-          'Fatigue (3-8% of patients)',
-          'Headache (3-5% of patients)'
-        ],
-        serious: [
-          'Severe allergic reactions (angioedema)',
-          'Liver problems',
-          'Severe low blood pressure',
-          'Kidney problems'
-        ]
-      },
       dosageWarnings: [
+        {
+          warning: 'Diabetes Management',
+          severity: 'High',
+          description: 'Take with meals to reduce stomach upset. Monitor blood glucose regularly.',
+          recommendation: 'Follow your diabetes care plan and check blood sugar as directed by your doctor'
+        },
         {
           warning: 'Kidney Function',
           severity: 'High',
-          description: 'May cause kidney problems in patients with existing kidney disease',
-          recommendation: 'Regular kidney function tests required, especially in elderly patients'
+          description: 'Not recommended if kidney function is severely impaired',
+          recommendation: 'Regular kidney function tests required before and during treatment'
         },
         {
-          warning: 'Pregnancy',
+          warning: 'Lactic Acidosis Risk',
           severity: 'High',
-          description: 'Can cause birth defects and should not be used during pregnancy',
-          recommendation: 'Use effective birth control and stop medication if pregnancy occurs'
-        },
-        {
-          warning: 'Blood Pressure Monitoring',
-          severity: 'Moderate',
-          description: 'May cause excessive blood pressure drop in some patients',
-          recommendation: 'Monitor blood pressure regularly, especially when starting treatment'
+          description: 'Rare but serious condition. Higher risk with kidney/liver problems or excessive alcohol',
+          recommendation: 'Avoid excessive alcohol and report symptoms like muscle pain, weakness, or difficulty breathing immediately'
         }
       ],
-      dosageInfo: {
-        adult: '10mg once daily, may increase to 40mg daily',
-        elderly: 'Start with 5mg daily, adjust based on kidney function',
-        renal: 'Adjust based on creatinine clearance: <30ml/min start with 5mg daily'
-      },
-      overallRisk: 'Moderate',
+      overallRisk: 'Low',
+      diabetesRisk: 'Low',
+      allergyRisk: 'Low',
       processingTime: 2.1,
-      dataSource: 'FDA Drug Database + RxNorm API',
+      dataSource: 'FDA Drug Database + Diabetes & Allergy Analysis',
       timestamp: new Date().toISOString(),
       apiStatus: 'connected',
       lastUpdated: new Date().toISOString(),
-      therapeuticClass: 'Antihypertensive',
-      halfLife: '12 hours',
-      metabolism: 'Liver (minimal)',
-      excretion: 'Kidney (primarily)',
+      therapeuticClass: 'Antidiabetic Agent',
+      halfLife: '6.2 hours',
+      metabolism: 'Not metabolized',
+      excretion: 'Kidney (unchanged)',
       contraindications: [
-        'Pregnancy',
-        'History of angioedema with ACE inhibitors',
-        'Severe kidney disease'
+        'Severe kidney disease (eGFR <30)',
+        'Severe liver disease',
+        'Lactic acidosis',
+        'Severe heart failure'
       ],
       monitoringRequired: [
-        'Blood pressure',
-        'Kidney function',
-        'Potassium levels',
-        'Liver function'
-      ]
+        'Blood glucose levels',
+        'HbA1c',
+        'Kidney function (creatinine, eGFR)',
+        'Vitamin B12 levels (long-term use)'
+      ],
+      // Textual Analysis Summary
+      textualAnalysis: `This medication (${'Metformin'}) has been analyzed for diabetes compatibility and allergy risks. 
+
+**Diabetes Compatibility:**
+For individuals with Type 2 diabetes, this medication is highly compatible and serves as a first-line treatment option. It effectively lowers blood glucose levels by reducing glucose production in the liver, which helps maintain better glycemic control. The medication may also contribute to weight loss and reduce the risk of diabetes-related complications when used as part of a comprehensive diabetes management plan.
+
+**Allergy Assessment:**
+The medication does not contain common allergens and has no known cross-reactivity with typical food allergens. However, rare allergic reactions to the medication itself may occur in less than 0.1% of users. If you experience symptoms such as skin rash, itching, or difficulty breathing, discontinue use immediately and seek medical attention. Some formulations may contain lactose, so individuals with lactose intolerance should consult with their pharmacist.
+
+**Food Interactions:**
+When taking this medication, it's important to be mindful of alcohol consumption as it increases the risk of lactic acidosis, a rare but serious condition. High-sugar foods should be consumed in moderation as part of your diabetes meal plan, and blood glucose should be monitored after meals. Long-term use may affect vitamin B12 absorption, so regular monitoring and potential supplementation may be recommended.
+
+**Overall Safety:**
+Based on the analysis, this medication presents a low overall risk for diabetes management and allergy concerns when used appropriately and under medical supervision. Regular monitoring of blood glucose, kidney function, and vitamin B12 levels is recommended for optimal safety and effectiveness.`
     };
   };
 
@@ -350,7 +390,7 @@ export default function MedicationScannerScreen({ navigation }) {
   if (capturedImage && !showResults && !isProcessing) {
     return (
       <ScreenContainer>
-        <ScreenHeader title="Medication Safety Checker" navigation={navigation} />
+        <ScreenHeader title="Diabetes and Allergy Analyzer" navigation={navigation} />
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
           {/* Success Header */}
           <View style={styles.successHeader}>
@@ -499,13 +539,13 @@ export default function MedicationScannerScreen({ navigation }) {
   if (isProcessing) {
     return (
       <ScreenContainer>
-        <ScreenHeader title="Analyze Medication" navigation={navigation} />
+        <ScreenHeader title="Diabetes and Allergy Analyzer" navigation={navigation} />
         <View style={styles.processingContainer}>
           <View style={styles.processingContent}>
             <ActivityIndicator size="large" color="#ff6b6b" />
-            <Text style={styles.processingTitle}>Analyzing Medication</Text>
+            <Text style={styles.processingTitle}>Analyzing for Diabetes & Allergy</Text>
             <Text style={styles.processingSubtitle}>
-              Identifying medication and checking for interactions...
+              Checking diabetes compatibility and allergy risks...
             </Text>
           </View>
         </View>
@@ -517,7 +557,7 @@ export default function MedicationScannerScreen({ navigation }) {
   if (showResults && scanResults) {
     return (
       <ScreenContainer>
-        <ScreenHeader title="Analyze Medication" navigation={navigation} />
+        <ScreenHeader title="Diabetes and Allergy Analyzer" navigation={navigation} />
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
           {/* Medication Interaction Warnings */}
           {interactionAnalysis && interactionAnalysis.overallRisk !== 'low' && (
@@ -537,7 +577,18 @@ export default function MedicationScannerScreen({ navigation }) {
             </View>
           )}
 
-          <Text style={styles.resultsTitle}>Analyze Medication</Text>
+          <Text style={styles.resultsTitle}>Diabetes and Allergy Analysis</Text>
+
+          {/* Textual Analysis Summary */}
+          {scanResults.textualAnalysis && (
+            <View style={styles.analysisCard}>
+              <View style={styles.analysisHeader}>
+                <Ionicons name="document-text" size={24} color="#4ECDC4" />
+                <Text style={styles.analysisTitle}>Analysis Summary</Text>
+              </View>
+              <Text style={styles.analysisText}>{scanResults.textualAnalysis}</Text>
+            </View>
+          )}
 
           {/* Medication Results */}
           <View style={styles.foodItem}>
@@ -557,30 +608,30 @@ export default function MedicationScannerScreen({ navigation }) {
                 )}
               </View>
               
-              {/* Medication Analysis Grid */}
+              {/* Diabetes and Allergy Analysis Grid */}
               <View style={styles.nutritionGrid}>
                 <View style={styles.nutritionItem}>
-                  <Text style={styles.nutritionLabel}>Classification</Text>
-                  <Text style={styles.nutritionValue}>{scanResults.classification || 'N/A'}</Text>
+                  <Text style={styles.nutritionLabel}>Diabetes Risk</Text>
+                  <Text style={[styles.nutritionValue, 
+                    scanResults.diabetesRisk === 'High' ? { color: '#ff6b6b' } :
+                    scanResults.diabetesRisk === 'Moderate' ? { color: '#ffa500' } :
+                    { color: '#00ff88' }
+                  ]}>
+                    {scanResults.diabetesRisk || 'Low'}
+                  </Text>
                 </View>
                 <View style={styles.nutritionItem}>
-                  <Text style={styles.nutritionLabel}>Therapeutic Class</Text>
-                  <Text style={styles.nutritionValue}>{scanResults.therapeuticClass || 'N/A'}</Text>
+                  <Text style={styles.nutritionLabel}>Allergy Risk</Text>
+                  <Text style={[styles.nutritionValue, 
+                    scanResults.allergyRisk === 'High' ? { color: '#ff6b6b' } :
+                    scanResults.allergyRisk === 'Moderate' ? { color: '#ffa500' } :
+                    { color: '#00ff88' }
+                  ]}>
+                    {scanResults.allergyRisk || 'Low'}
+                  </Text>
                 </View>
                 <View style={styles.nutritionItem}>
-                  <Text style={styles.nutritionLabel}>Half-Life</Text>
-                  <Text style={styles.nutritionValue}>{scanResults.halfLife || 'N/A'}</Text>
-                </View>
-                <View style={styles.nutritionItem}>
-                  <Text style={styles.nutritionLabel}>Metabolism</Text>
-                  <Text style={styles.nutritionValue}>{scanResults.metabolism || 'N/A'}</Text>
-                </View>
-                <View style={styles.nutritionItem}>
-                  <Text style={styles.nutritionLabel}>Excretion</Text>
-                  <Text style={styles.nutritionValue}>{scanResults.excretion || 'N/A'}</Text>
-                </View>
-                <View style={styles.nutritionItem}>
-                  <Text style={styles.nutritionLabel}>Overall Risk</Text>
+                  <Text style={styles.nutritionLabel}>Overall Safety</Text>
                   <Text style={[styles.nutritionValue, 
                     scanResults.overallRisk === 'High' ? { color: '#ff6b6b' } :
                     scanResults.overallRisk === 'Moderate' ? { color: '#ffa500' } :
@@ -591,70 +642,101 @@ export default function MedicationScannerScreen({ navigation }) {
                 </View>
               </View>
 
-              {/* Indication Section */}
-              {scanResults.indication && (
+              {/* Diabetes Compatibility Section */}
+              {scanResults.diabetesCompatibility && (
                 <View style={styles.medicationDetails}>
-                  <Text style={styles.sectionTitle}>Indication</Text>
-                  <Text style={styles.detailValue}>{scanResults.indication}</Text>
+                  <Text style={styles.sectionTitle}>Diabetes Compatibility</Text>
+                  {scanResults.diabetesCompatibility.type2 && (
+                    <View style={styles.compatibilityItem}>
+                      <View style={styles.compatibilityHeader}>
+                        <Text style={styles.compatibilityType}>Type 2 Diabetes</Text>
+                        <View style={[
+                          styles.compatibilityBadge,
+                          scanResults.diabetesCompatibility.type2.compatible 
+                            ? styles.compatibleBadge 
+                            : styles.incompatibleBadge
+                        ]}>
+                          <Text style={styles.compatibilityBadgeText}>
+                            {scanResults.diabetesCompatibility.type2.compatible ? '✓ Compatible' : '✗ Not Compatible'}
+                          </Text>
+                        </View>
+                      </View>
+                      <Text style={styles.detailValue}>
+                        {scanResults.diabetesCompatibility.type2.reason}
+                      </Text>
+                      {scanResults.diabetesCompatibility.type2.benefits && (
+                        <View style={styles.benefitsList}>
+                          {scanResults.diabetesCompatibility.type2.benefits.map((benefit, idx) => (
+                            <View key={idx} style={styles.benefitItem}>
+                              <Ionicons name="checkmark-circle" size={14} color="#00ff88" />
+                              <Text style={styles.benefitText}>{benefit}</Text>
+                            </View>
+                          ))}
+                        </View>
+                      )}
+                    </View>
+                  )}
+                  {scanResults.diabetesCompatibility.bloodGlucoseImpact && (
+                    <View style={styles.impactItem}>
+                      <Text style={styles.impactLabel}>Blood Glucose Impact:</Text>
+                      <Text style={styles.impactValue}>
+                        {scanResults.diabetesCompatibility.bloodGlucoseImpact}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               )}
 
-              {/* Dosage Information */}
-              {scanResults.dosageInfo && (
+              {/* Allergy Analysis Section */}
+              {scanResults.allergyAnalysis && (
                 <View style={styles.medicationDetails}>
-                  <Text style={styles.sectionTitle}>Dosage Information</Text>
-                  {scanResults.dosageInfo.adult && (
-                    <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Adult:</Text>
-                      <Text style={styles.detailValue}>{scanResults.dosageInfo.adult}</Text>
-                    </View>
+                  <Text style={styles.sectionTitle}>Allergy Analysis</Text>
+                  <View style={styles.allergyStatus}>
+                    <Text style={styles.allergyStatusLabel}>Contains Common Allergens:</Text>
+                    <Text style={[
+                      styles.allergyStatusValue,
+                      scanResults.allergyAnalysis.containsAllergens ? { color: '#ff6b6b' } : { color: '#00ff88' }
+                    ]}>
+                      {scanResults.allergyAnalysis.containsAllergens ? 'Yes' : 'No'}
+                    </Text>
+                  </View>
+                  {scanResults.allergyAnalysis.crossReactivity && (
+                    <Text style={styles.detailValue}>
+                      {scanResults.allergyAnalysis.crossReactivity}
+                    </Text>
                   )}
-                  {scanResults.dosageInfo.elderly && (
-                    <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Elderly:</Text>
-                      <Text style={styles.detailValue}>{scanResults.dosageInfo.elderly}</Text>
-                    </View>
-                  )}
-                  {scanResults.dosageInfo.renal && (
-                    <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Renal:</Text>
-                      <Text style={styles.detailValue}>{scanResults.dosageInfo.renal}</Text>
-                    </View>
-                  )}
-                </View>
-              )}
-
-              {/* Side Effects */}
-              {scanResults.sideEffects && (
-                <View style={styles.medicationDetails}>
-                  <Text style={styles.sectionTitle}>Side Effects</Text>
-                  {scanResults.sideEffects.common && scanResults.sideEffects.common.length > 0 && (
-                    <View style={styles.sideEffectSection}>
-                      <Text style={styles.sideEffectLabel}>Common:</Text>
-                      {scanResults.sideEffects.common.map((effect, idx) => (
-                        <Text key={idx} style={styles.sideEffectItem}>• {effect}</Text>
+                  {scanResults.allergyAnalysis.allergicReactions && scanResults.allergyAnalysis.allergicReactions.length > 0 && (
+                    <View style={styles.allergyReactions}>
+                      <Text style={styles.allergyReactionsTitle}>Potential Allergic Reactions:</Text>
+                      {scanResults.allergyAnalysis.allergicReactions.map((reaction, idx) => (
+                        <View key={idx} style={styles.reactionItem}>
+                          <Text style={styles.reactionAllergen}>{reaction.allergen}</Text>
+                          <Text style={styles.reactionFrequency}>Frequency: {reaction.frequency}</Text>
+                          <Text style={styles.reactionSymptoms}>Symptoms: {reaction.symptoms}</Text>
+                          <Text style={styles.reactionRecommendation}>
+                            💡 {reaction.recommendation}
+                          </Text>
+                        </View>
                       ))}
                     </View>
                   )}
-                  {scanResults.sideEffects.serious && scanResults.sideEffects.serious.length > 0 && (
-                    <View style={styles.sideEffectSection}>
-                      <Text style={[styles.sideEffectLabel, { color: '#ff6b6b' }]}>Serious:</Text>
-                      {scanResults.sideEffects.serious.map((effect, idx) => (
-                        <Text key={idx} style={[styles.sideEffectItem, { color: '#ff6b6b' }]}>• {effect}</Text>
-                      ))}
+                  {scanResults.allergyAnalysis.lactoseWarning && (
+                    <View style={styles.warningBox}>
+                      <Ionicons name="warning" size={16} color="#ffa500" />
+                      <Text style={styles.warningText}>{scanResults.allergyAnalysis.lactoseWarning}</Text>
                     </View>
                   )}
                 </View>
               )}
 
-              {/* Interactions */}
-              {scanResults.interactions && scanResults.interactions.length > 0 && (
+              {/* Food Interactions for Diabetes */}
+              {scanResults.foodInteractions && scanResults.foodInteractions.length > 0 && (
                 <View style={styles.medicationDetails}>
-                  <Text style={styles.sectionTitle}>Drug Interactions</Text>
-                  {scanResults.interactions.slice(0, 3).map((interaction, idx) => (
+                  <Text style={styles.sectionTitle}>Food Interactions (Diabetes-Related)</Text>
+                  {scanResults.foodInteractions.map((interaction, idx) => (
                     <View key={idx} style={styles.interactionItem}>
                       <View style={styles.interactionHeader}>
-                        <Text style={styles.interactionDrug}>{interaction.drug}</Text>
+                        <Text style={styles.interactionDrug}>{interaction.food}</Text>
                         <Text style={[
                           styles.interactionSeverity,
                           interaction.severity === 'High' ? { color: '#ff6b6b' } :
@@ -673,28 +755,36 @@ export default function MedicationScannerScreen({ navigation }) {
                 </View>
               )}
 
-              {/* Warnings */}
+              {/* Diabetes and Allergy Related Warnings Only */}
               {scanResults.dosageWarnings && scanResults.dosageWarnings.length > 0 && (
                 <View style={styles.medicationDetails}>
-                  <Text style={styles.sectionTitle}>Important Warnings</Text>
-                  {scanResults.dosageWarnings.map((warning, idx) => (
-                    <View key={idx} style={styles.warningItem}>
-                      <View style={styles.warningHeader}>
-                        <Text style={styles.warningTitle}>{warning.warning}</Text>
-                        <Text style={[
-                          styles.warningSeverity,
-                          warning.severity === 'High' ? { color: '#ff6b6b' } :
-                          { color: '#ffa500' }
-                        ]}>
-                          {warning.severity}
-                        </Text>
+                  <Text style={styles.sectionTitle}>Important Warnings (Diabetes & Allergy Related)</Text>
+                  {scanResults.dosageWarnings
+                    .filter(warning => 
+                      warning.warning.toLowerCase().includes('diabetes') || 
+                      warning.warning.toLowerCase().includes('allergy') ||
+                      warning.warning.toLowerCase().includes('allergic') ||
+                      warning.warning.toLowerCase().includes('glucose') ||
+                      warning.warning.toLowerCase().includes('blood sugar')
+                    )
+                    .map((warning, idx) => (
+                      <View key={idx} style={styles.warningItem}>
+                        <View style={styles.warningHeader}>
+                          <Text style={styles.warningTitle}>{warning.warning}</Text>
+                          <Text style={[
+                            styles.warningSeverity,
+                            warning.severity === 'High' ? { color: '#ff6b6b' } :
+                            { color: '#ffa500' }
+                          ]}>
+                            {warning.severity}
+                          </Text>
+                        </View>
+                        <Text style={styles.warningDescription}>{warning.description}</Text>
+                        {warning.recommendation && (
+                          <Text style={styles.warningRecommendation}>💡 {warning.recommendation}</Text>
+                        )}
                       </View>
-                      <Text style={styles.warningDescription}>{warning.description}</Text>
-                      {warning.recommendation && (
-                        <Text style={styles.warningRecommendation}>💡 {warning.recommendation}</Text>
-                      )}
-                    </View>
-                  ))}
+                    ))}
                 </View>
               )}
             </LinearGradient>
@@ -728,7 +818,7 @@ export default function MedicationScannerScreen({ navigation }) {
   // Camera/Scanner Screen
   return (
     <ScreenContainer>
-      <ScreenHeader title="Medication Safety Checker" navigation={navigation} />
+      <ScreenHeader title="Diabetes and Allergy Analyzer" navigation={navigation} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Search Option */}
         <View style={styles.searchContainer}>
@@ -1374,6 +1464,172 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     textAlign: 'center',
     lineHeight: 16,
+  },
+  // Diabetes and Allergy Analysis Styles
+  compatibilityItem: {
+    marginBottom: 15,
+    padding: 12,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 8,
+  },
+  compatibilityHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  compatibilityType: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+  },
+  compatibilityBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  compatibleBadge: {
+    backgroundColor: 'rgba(0,255,136,0.2)',
+  },
+  incompatibleBadge: {
+    backgroundColor: 'rgba(255,107,107,0.2)',
+  },
+  compatibilityBadgeText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+  },
+  benefitsList: {
+    marginTop: 10,
+  },
+  benefitItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  benefitText: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    marginLeft: 6,
+    flex: 1,
+  },
+  impactItem: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: 'rgba(78,205,196,0.1)',
+    borderRadius: 8,
+  },
+  impactLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+    marginBottom: 4,
+  },
+  impactValue: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    lineHeight: 18,
+  },
+  allergyStatus: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+    padding: 12,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 8,
+  },
+  allergyStatusLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+  },
+  allergyStatusValue: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  allergyReactions: {
+    marginTop: 12,
+  },
+  allergyReactionsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+    marginBottom: 10,
+  },
+  reactionItem: {
+    marginBottom: 12,
+    padding: 12,
+    backgroundColor: 'rgba(255,107,107,0.1)',
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: '#ff6b6b',
+  },
+  reactionAllergen: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+    marginBottom: 4,
+  },
+  reactionFrequency: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginBottom: 4,
+  },
+  reactionSymptoms: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginBottom: 6,
+  },
+  reactionRecommendation: {
+    fontSize: 12,
+    color: '#ffa500',
+    fontStyle: 'italic',
+    marginTop: 4,
+  },
+  warningBox: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 12,
+    padding: 12,
+    backgroundColor: 'rgba(255,165,0,0.1)',
+    borderRadius: 8,
+    borderLeftWidth: 3,
+    borderLeftColor: '#ffa500',
+  },
+  warningText: {
+    fontSize: 13,
+    color: Colors.textSecondary,
+    marginLeft: 8,
+    flex: 1,
+    lineHeight: 18,
+  },
+  // Textual Analysis Styles
+  analysisCard: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    backgroundColor: Colors.backgroundCard,
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(78,205,196,0.2)',
+  },
+  analysisHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  analysisTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: Colors.textPrimary,
+    marginLeft: 12,
+  },
+  analysisText: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    lineHeight: 22,
+    textAlign: 'left',
   },
 });
 

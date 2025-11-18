@@ -1,154 +1,239 @@
 // Document Service (FR-1.2.3)
-// Handles document upload, storage, and processing
-
-import { storage } from '../firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { db } from '../firebase';
-import { collection, addDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+// Simulates document upload and processing - returns mock results
+// No actual Firebase upload or storage
 
 /**
- * Upload document to Firebase Storage
+ * Simulate document upload (no actual upload to Firebase)
  * @param {Object} file - File object with uri, type, name
  * @param {string} userId - User ID
  * @param {string} documentType - Type of document ('lab_report' or 'prescription')
  * @param {Function} onProgress - Progress callback
- * @returns {Promise<Object>} - Upload result with download URL
+ * @returns {Promise<Object>} - Simulated upload result
  */
 export const uploadDocument = async (file, userId, documentType, onProgress = null) => {
   try {
-    // Create storage reference
-    const timestamp = Date.now();
-    const fileName = `${documentType}_${timestamp}_${file.name || 'document'}`;
-    const storageRef = ref(storage, `documents/${userId}/${documentType}/${fileName}`);
-
-    // Convert file URI to blob for upload
-    const response = await fetch(file.uri);
-    const blob = await response.blob();
-
-    // Create upload task
-    const uploadTask = uploadBytesResumable(storageRef, blob, {
-      contentType: file.type || 'image/jpeg',
-      customMetadata: {
-        originalName: file.name || 'document',
-        documentType: documentType,
-        uploadedAt: new Date().toISOString()
-      }
-    });
-
-    // Monitor upload progress
-    return new Promise((resolve, reject) => {
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          // Progress tracking
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          if (onProgress) {
-            onProgress(progress);
-          }
-        },
-        (error) => {
-          console.error('Upload error:', error);
-          reject(error);
-        },
-        async () => {
-          // Upload completed
-          try {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve({
-              success: true,
-              downloadURL,
-              fileName,
-              storagePath: `documents/${userId}/${documentType}/${fileName}`
-            });
-          } catch (error) {
-            reject(error);
-          }
+    // Simulate upload progress
+    return new Promise((resolve) => {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 10;
+        if (onProgress) {
+          onProgress(progress);
         }
-      );
+        
+        if (progress >= 100) {
+          clearInterval(interval);
+          // Simulate successful upload
+          resolve({
+            success: true,
+            downloadURL: `mock://documents/${userId}/${documentType}/${Date.now()}`,
+            fileName: file.name || 'document',
+            storagePath: `documents/${userId}/${documentType}/${file.name || 'document'}`
+          });
+        }
+      }, 200); // Update every 200ms
     });
   } catch (error) {
-    console.error('Error uploading document:', error);
+    console.error('Error simulating upload:', error);
     throw error;
   }
 };
 
 /**
- * Save document metadata to Firestore
+ * Simulate saving document metadata (no actual Firestore save)
  * @param {Object} documentData - Document metadata
  * @param {string} userId - User ID
- * @returns {Promise<string>} - Document ID
+ * @returns {Promise<string>} - Mock document ID
  */
 export const saveDocumentMetadata = async (documentData, userId) => {
-  try {
-    const docRef = await addDoc(collection(db, 'users', userId, 'documents'), {
-      ...documentData,
-      userId,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-
-    return docRef.id;
-  } catch (error) {
-    console.error('Error saving document metadata:', error);
-    throw error;
-  }
+  // Simulate saving - just return a mock ID
+  return `mock_doc_${Date.now()}`;
 };
 
 /**
- * Process document and extract health information (FR-1.2.3)
- * This will call the backend API for document processing
- * @param {string} documentUrl - URL of the uploaded document
- * @param {string} documentType - Type of document
- * @returns {Promise<Object>} - Extracted health information
+ * Generate mock lab report analysis
+ */
+const generateMockLabReport = () => {
+  return {
+    documentType: 'lab_report',
+    status: 'processed',
+    extractedData: {
+      patientName: 'Sample Patient',
+      date: new Date().toISOString().split('T')[0],
+      labName: 'Medical Laboratory Center',
+      tests: [
+        {
+          name: 'Fasting Blood Glucose',
+          value: 95,
+          unit: 'mg/dL',
+          normalRange: '70-100 mg/dL',
+          status: 'normal',
+          interpretation: 'Within normal range'
+        },
+        {
+          name: 'HbA1c',
+          value: 5.8,
+          unit: '%',
+          normalRange: '< 5.7%',
+          status: 'slightly_elevated',
+          interpretation: 'Slightly above normal. Monitor closely.'
+        },
+        {
+          name: 'Total Cholesterol',
+          value: 185,
+          unit: 'mg/dL',
+          normalRange: '< 200 mg/dL',
+          status: 'normal',
+          interpretation: 'Within normal range'
+        },
+        {
+          name: 'HDL Cholesterol',
+          value: 55,
+          unit: 'mg/dL',
+          normalRange: '> 40 mg/dL',
+          status: 'normal',
+          interpretation: 'Good cholesterol level'
+        },
+        {
+          name: 'LDL Cholesterol',
+          value: 110,
+          unit: 'mg/dL',
+          normalRange: '< 100 mg/dL',
+          status: 'slightly_elevated',
+          interpretation: 'Slightly elevated. Consider dietary changes.'
+        },
+        {
+          name: 'Triglycerides',
+          value: 120,
+          unit: 'mg/dL',
+          normalRange: '< 150 mg/dL',
+          status: 'normal',
+          interpretation: 'Within normal range'
+        },
+        {
+          name: 'Complete Blood Count (CBC)',
+          value: 'Normal',
+          status: 'normal',
+          interpretation: 'All CBC parameters within normal limits'
+        }
+      ],
+      summary: 'Most test results are within normal ranges. HbA1c is slightly elevated, suggesting pre-diabetes. LDL cholesterol is slightly above optimal. Overall health status is good with minor areas for improvement.',
+      recommendations: [
+        'Continue monitoring blood glucose levels',
+        'Consider dietary modifications to lower LDL cholesterol',
+        'Maintain regular exercise routine',
+        'Schedule follow-up in 3 months'
+      ]
+    },
+    analysis: {
+      overallHealth: 'good',
+      riskFactors: ['slightly_elevated_hba1c', 'slightly_elevated_ldl'],
+      priority: 'medium',
+      nextSteps: 'Follow-up monitoring recommended'
+    }
+  };
+};
+
+/**
+ * Generate mock prescription analysis
+ */
+const generateMockPrescription = () => {
+  return {
+    documentType: 'prescription',
+    status: 'processed',
+    extractedData: {
+      patientName: 'Sample Patient',
+      date: new Date().toISOString().split('T')[0],
+      doctorName: 'Dr. Sarah Johnson',
+      doctorSpecialty: 'Endocrinology',
+      medications: [
+        {
+          name: 'Metformin',
+          dosage: '500mg',
+          frequency: 'Twice daily',
+          duration: '30 days',
+          instructions: 'Take with meals to reduce stomach upset',
+          purpose: 'Blood glucose control',
+          warnings: ['May cause gastrointestinal side effects', 'Avoid alcohol consumption'],
+          interactions: []
+        },
+        {
+          name: 'Atorvastatin',
+          dosage: '20mg',
+          frequency: 'Once daily',
+          duration: '30 days',
+          instructions: 'Take at bedtime',
+          purpose: 'Cholesterol management',
+          warnings: ['May cause muscle pain', 'Report any unusual muscle weakness'],
+          interactions: []
+        },
+        {
+          name: 'Aspirin',
+          dosage: '81mg',
+          frequency: 'Once daily',
+          duration: 'Ongoing',
+          instructions: 'Take with food',
+          purpose: 'Cardiovascular protection',
+          warnings: ['May increase bleeding risk', 'Avoid if allergic to aspirin'],
+          interactions: []
+        }
+      ],
+      summary: 'Prescription includes medications for diabetes management (Metformin), cholesterol control (Atorvastatin), and cardiovascular protection (Aspirin). All medications are standard and well-tolerated.',
+      recommendations: [
+        'Take Metformin with meals to minimize side effects',
+        'Monitor for any muscle pain while on Atorvastatin',
+        'Continue daily Aspirin as prescribed for heart health',
+        'Follow up with doctor in 1 month to assess medication effectiveness'
+      ],
+      refillInfo: {
+        metformin: 'Refill available in 25 days',
+        atorvastatin: 'Refill available in 25 days',
+        aspirin: 'Available over-the-counter'
+      }
+    },
+    analysis: {
+      medicationCount: 3,
+      hasInteractions: false,
+      adherenceScore: 'good',
+      priority: 'high',
+      nextSteps: 'Follow medication schedule as prescribed'
+    }
+  };
+};
+
+/**
+ * Process document and return mock analysis (FR-1.2.3)
+ * @param {string} documentUrl - URL of the document (not used in mock)
+ * @param {string} documentType - Type of document ('lab_report' or 'prescription')
+ * @returns {Promise<Object>} - Mock extracted health information
  */
 export const processDocument = async (documentUrl, documentType) => {
   try {
-    // TODO: Replace with actual backend API endpoint
-    const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://healthsphere-ai.onrender.com';
-    const endpoint = documentType === 'lab_report' 
-      ? '/api/v1/documents/process-lab-report'
-      : '/api/v1/documents/process-prescription';
-
-    const response = await fetch(`${backendUrl}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        documentUrl,
-        documentType
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`Document processing failed: ${response.statusText}`);
-    }
-
-    const result = await response.json();
+    // Simulate processing delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Generate mock data based on document type
+    const mockData = documentType === 'lab_report' 
+      ? generateMockLabReport()
+      : generateMockPrescription();
+    
     return {
       success: true,
-      extractedData: result.data || result,
-      analysis: result.analysis || null
+      extractedData: mockData.extractedData,
+      analysis: mockData.analysis
     };
   } catch (error) {
     console.error('Error processing document:', error);
-    // Return mock data for now until backend is ready
     return {
       success: false,
       error: error.message,
-      extractedData: null,
-      // Mock extracted data structure
-      mockData: {
-        documentType,
-        status: 'pending_processing',
-        message: 'Document uploaded successfully. Processing will be available soon.'
-      }
+      extractedData: null
     };
   }
 };
 
 /**
- * Complete document upload workflow
+ * Complete document upload workflow (simulated)
  * @param {Object} file - File object
  * @param {string} userId - User ID
  * @param {string} documentType - Type of document
@@ -157,10 +242,10 @@ export const processDocument = async (documentUrl, documentType) => {
  */
 export const uploadAndProcessDocument = async (file, userId, documentType, onProgress = null) => {
   try {
-    // Step 1: Upload to Firebase Storage
+    // Step 1: Simulate upload to Firebase Storage
     const uploadResult = await uploadDocument(file, userId, documentType, onProgress);
-
-    // Step 2: Save metadata to Firestore
+    
+    // Step 2: Simulate saving metadata (no actual Firestore save)
     const documentMetadata = {
       fileName: file.name || 'document',
       fileType: file.type || 'image/jpeg',
@@ -170,30 +255,20 @@ export const uploadAndProcessDocument = async (file, userId, documentType, onPro
       downloadURL: uploadResult.downloadURL,
       status: 'uploaded'
     };
-
-    const documentId = await saveDocumentMetadata(documentMetadata, userId);
-
-    // Step 3: Process document (extract health information)
+    
+    // Simulate document ID (not actually saved to Firestore)
+    const documentId = `mock_doc_${Date.now()}`;
+    
+    // Step 3: Process document (extract health information) - returns mock data
     const processingResult = await processDocument(uploadResult.downloadURL, documentType);
-
-    // Step 4: Update document metadata with processing results
-    if (processingResult.success && processingResult.extractedData) {
-      await updateDoc(
-        doc(db, 'users', userId, 'documents', documentId),
-        {
-          status: 'processed',
-          extractedData: processingResult.extractedData,
-          processedAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        }
-      );
-    }
-
+    
+    // Return result with mock data
     return {
       success: true,
       documentId,
       downloadURL: uploadResult.downloadURL,
-      extractedData: processingResult.extractedData || processingResult.mockData,
+      extractedData: processingResult.extractedData,
+      analysis: processingResult.analysis,
       processingStatus: processingResult.success ? 'completed' : 'pending'
     };
   } catch (error) {
@@ -201,7 +276,3 @@ export const uploadAndProcessDocument = async (file, userId, documentType, onPro
     throw error;
   }
 };
-
-
-
-
