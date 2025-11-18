@@ -159,10 +159,25 @@ export default function DocumentUploadScreen({ navigation }) {
     }
 
     setIsUploading(true);
+    setIsProcessing(false);
     setUploadProgress(0);
     setUploadResult(null);
+    setShowResultModal(false);
 
     try {
+      // Simulate upload progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            setIsUploading(false);
+            setIsProcessing(true);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
       const result = await uploadAndProcessDocument(
         selectedFile,
         user.id,
@@ -172,19 +187,27 @@ export default function DocumentUploadScreen({ navigation }) {
         }
       );
 
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+      
+      // Log result for debugging
+      console.log('Upload result:', JSON.stringify(result, null, 2));
+      console.log('Extracted data:', result?.extractedData);
+      
+      // Set the result and show modal immediately
       setUploadResult(result);
-      setShowResultModal(true);
       setIsUploading(false);
+      setIsProcessing(false);
       setSelectedFile(null);
       
-      Alert.alert(
-        'Success',
-        'Document uploaded successfully! Processing will extract health information.',
-        [{ text: 'OK' }]
-      );
+      // Small delay to ensure state is updated before showing modal
+      setTimeout(() => {
+        setShowResultModal(true);
+      }, 100);
     } catch (error) {
       console.error('Upload error:', error);
       setIsUploading(false);
+      setIsProcessing(false);
       Alert.alert(
         'Upload Failed',
         error.message || 'Failed to upload document. Please try again.'
@@ -420,16 +443,231 @@ export default function DocumentUploadScreen({ navigation }) {
             </TouchableOpacity>
             
             <Ionicons name="checkmark-circle" size={64} color="#4ECDC4" />
-            <Text style={styles.modalTitle}>Document Uploaded Successfully!</Text>
+            <Text style={styles.modalTitle}>
+              {uploadResult?.extractedData?.documentType === 'lab_report' 
+                ? 'Lab Report Analysis' 
+                : uploadResult?.extractedData?.documentType === 'prescription'
+                ? 'Prescription Analysis'
+                : 'Document Processed Successfully!'}
+            </Text>
             
-            {uploadResult?.extractedData && (
+            {uploadResult?.extractedData ? (
+              <ScrollView 
+                style={styles.resultScrollView}
+                showsVerticalScrollIndicator={true}
+              >
+                {/* Lab Report Results */}
+                {uploadResult.extractedData.documentType === 'lab_report' && uploadResult.extractedData.tests && (
+                  <View style={styles.resultContainer}>
+                    <Text style={styles.resultSectionTitle}>Lab Report Analysis</Text>
+                    
+                    {uploadResult.extractedData.patientName && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Patient:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.patientName}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.date && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Date:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.date}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.labName && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Lab:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.labName}</Text>
+                      </View>
+                    )}
+                    
+                    <Text style={styles.resultSubtitle}>Test Results:</Text>
+                    {uploadResult.extractedData.tests.map((test, index) => (
+                      <View key={index} style={styles.testItem}>
+                        <View style={styles.testHeader}>
+                          <Text style={styles.testName}>{test.name}</Text>
+                          <View style={[
+                            styles.statusBadge,
+                            test.status === 'normal' ? styles.statusNormal :
+                            test.status === 'slightly_elevated' ? styles.statusWarning :
+                            styles.statusDanger
+                          ]}>
+                            <Text style={styles.statusText}>
+                              {test.status === 'normal' ? 'Normal' :
+                               test.status === 'slightly_elevated' ? 'Elevated' : 'Abnormal'}
+                            </Text>
+                          </View>
+                        </View>
+                        {test.value && (
+                          <Text style={styles.testValue}>
+                            {test.value} {test.unit || ''}
+                          </Text>
+                        )}
+                        {test.normalRange && (
+                          <Text style={styles.testRange}>
+                            Normal Range: {test.normalRange}
+                          </Text>
+                        )}
+                        {test.interpretation && (
+                          <Text style={styles.testInterpretation}>
+                            {test.interpretation}
+                          </Text>
+                        )}
+                      </View>
+                    ))}
+                    
+                    {uploadResult.extractedData.summary && (
+                      <View style={styles.summaryContainer}>
+                        <Text style={styles.summaryTitle}>Summary:</Text>
+                        <Text style={styles.summaryText}>{uploadResult.extractedData.summary}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.recommendations && uploadResult.extractedData.recommendations.length > 0 && (
+                      <View style={styles.recommendationsContainer}>
+                        <Text style={styles.recommendationsTitle}>Recommendations:</Text>
+                        {uploadResult.extractedData.recommendations.map((rec, index) => (
+                          <View key={index} style={styles.recommendationItem}>
+                            <Ionicons name="checkmark-circle" size={16} color="#4ECDC4" />
+                            <Text style={styles.recommendationText}>{rec}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                )}
+
+                {/* Prescription Results */}
+                {uploadResult.extractedData.documentType === 'prescription' && uploadResult.extractedData.medications && (
+                  <View style={styles.resultContainer}>
+                    <Text style={styles.resultSectionTitle}>Prescription Analysis</Text>
+                    
+                    {uploadResult.extractedData.patientName && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Patient:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.patientName}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.date && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Date:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.date}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.doctorName && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Prescribed by:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.doctorName}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.doctorSpecialty && (
+                      <View style={styles.resultRow}>
+                        <Text style={styles.resultLabel}>Specialty:</Text>
+                        <Text style={styles.resultValue}>{uploadResult.extractedData.doctorSpecialty}</Text>
+                      </View>
+                    )}
+                    
+                    <Text style={styles.resultSubtitle}>Medications:</Text>
+                    {uploadResult.extractedData.medications.map((med, index) => (
+                      <View key={index} style={styles.medicationItem}>
+                        <View style={styles.medicationHeader}>
+                          <Ionicons name="medical" size={20} color="#4ECDC4" />
+                          <Text style={styles.medicationName}>{med.name}</Text>
+                        </View>
+                        <View style={styles.medicationDetails}>
+                          <Text style={styles.medicationDetail}>
+                            <Text style={styles.medicationDetailLabel}>Dosage: </Text>
+                            {med.dosage}
+                          </Text>
+                          <Text style={styles.medicationDetail}>
+                            <Text style={styles.medicationDetailLabel}>Frequency: </Text>
+                            {med.frequency}
+                          </Text>
+                          <Text style={styles.medicationDetail}>
+                            <Text style={styles.medicationDetailLabel}>Duration: </Text>
+                            {med.duration}
+                          </Text>
+                          {med.instructions && (
+                            <Text style={styles.medicationInstructions}>
+                              <Text style={styles.medicationDetailLabel}>Instructions: </Text>
+                              {med.instructions}
+                            </Text>
+                          )}
+                          {med.purpose && (
+                            <Text style={styles.medicationPurpose}>
+                              <Text style={styles.medicationDetailLabel}>Purpose: </Text>
+                              {med.purpose}
+                            </Text>
+                          )}
+                          {med.warnings && med.warnings.length > 0 && (
+                            <View style={styles.warningsContainer}>
+                              <Text style={styles.warningsTitle}>Warnings:</Text>
+                              {med.warnings.map((warning, wIndex) => (
+                                <View key={wIndex} style={styles.warningItem}>
+                                  <Ionicons name="warning" size={14} color="#ff6b6b" />
+                                  <Text style={styles.warningText}>{warning}</Text>
+                                </View>
+                              ))}
+                            </View>
+                          )}
+                        </View>
+                      </View>
+                    ))}
+                    
+                    {uploadResult.extractedData.summary && (
+                      <View style={styles.summaryContainer}>
+                        <Text style={styles.summaryTitle}>Summary:</Text>
+                        <Text style={styles.summaryText}>{uploadResult.extractedData.summary}</Text>
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.recommendations && uploadResult.extractedData.recommendations.length > 0 && (
+                      <View style={styles.recommendationsContainer}>
+                        <Text style={styles.recommendationsTitle}>Recommendations:</Text>
+                        {uploadResult.extractedData.recommendations.map((rec, index) => (
+                          <View key={index} style={styles.recommendationItem}>
+                            <Ionicons name="checkmark-circle" size={16} color="#4ECDC4" />
+                            <Text style={styles.recommendationText}>{rec}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                    
+                    {uploadResult.extractedData.refillInfo && (
+                      <View style={styles.refillContainer}>
+                        <Text style={styles.refillTitle}>Refill Information:</Text>
+                        {Object.entries(uploadResult.extractedData.refillInfo).map(([med, info], index) => (
+                          <View key={index} style={styles.refillItem}>
+                            <Text style={styles.refillMedName}>{med}:</Text>
+                            <Text style={styles.refillInfo}>{info}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                )}
+
+                {/* Processing Status if no detailed data */}
+                {uploadResult.extractedData.documentType !== 'lab_report' && 
+                 uploadResult.extractedData.documentType !== 'prescription' && (
+                  <View style={styles.resultContainer}>
+                    <Text style={styles.resultTitle}>Processing Status:</Text>
+                    <Text style={styles.resultText}>
+                      {uploadResult.processingStatus === 'completed'
+                        ? 'Health information extracted successfully'
+                        : 'Document is being processed'}
+                    </Text>
+                  </View>
+                )}
+              </ScrollView>
+            ) : (
               <View style={styles.resultContainer}>
-                <Text style={styles.resultTitle}>Processing Status:</Text>
-                <Text style={styles.resultText}>
-                  {uploadResult.processingStatus === 'completed'
-                    ? 'Health information extracted successfully'
-                    : 'Document is being processed'}
-                </Text>
+                <Text style={styles.resultTitle}>Processing...</Text>
+                <Text style={styles.resultText}>Please wait while we analyze your document.</Text>
               </View>
             )}
 
@@ -627,6 +865,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     maxWidth: 400,
+    maxHeight: '90%',
+  },
+  resultScrollView: {
+    width: '100%',
+    maxHeight: 400,
+    marginVertical: 16,
   },
   modalCloseButton: {
     position: 'absolute',
@@ -669,6 +913,219 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
+  },
+  resultSectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  resultRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+    paddingVertical: 4,
+  },
+  resultLabel: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    fontWeight: '600',
+  },
+  resultValue: {
+    fontSize: 14,
+    color: Colors.textPrimary,
+    flex: 1,
+    textAlign: 'right',
+  },
+  resultSubtitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+    marginTop: 16,
+    marginBottom: 12,
+  },
+  testItem: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+  },
+  testHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  testName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+  statusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+  },
+  statusNormal: {
+    backgroundColor: 'rgba(78, 205, 196, 0.2)',
+  },
+  statusWarning: {
+    backgroundColor: 'rgba(255, 170, 0, 0.2)',
+  },
+  statusDanger: {
+    backgroundColor: 'rgba(255, 107, 107, 0.2)',
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+  },
+  testValue: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#4ECDC4',
+    marginBottom: 4,
+  },
+  testRange: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginBottom: 4,
+  },
+  testInterpretation: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+    fontStyle: 'italic',
+    marginTop: 4,
+  },
+  medicationItem: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+  },
+  medicationHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+    gap: 8,
+  },
+  medicationName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+  },
+  medicationDetails: {
+    gap: 6,
+  },
+  medicationDetail: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+  },
+  medicationDetailLabel: {
+    fontWeight: '600',
+    color: Colors.textSecondary,
+  },
+  medicationInstructions: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+    marginTop: 4,
+    fontStyle: 'italic',
+  },
+  medicationPurpose: {
+    fontSize: 13,
+    color: '#4ECDC4',
+    marginTop: 4,
+  },
+  warningsContainer: {
+    marginTop: 8,
+    padding: 8,
+    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+    borderRadius: 8,
+  },
+  warningsTitle: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#ff6b6b',
+    marginBottom: 6,
+  },
+  warningItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 4,
+    gap: 6,
+  },
+  warningText: {
+    fontSize: 12,
+    color: Colors.textPrimary,
+    flex: 1,
+  },
+  summaryContainer: {
+    backgroundColor: 'rgba(78, 205, 196, 0.1)',
+    borderRadius: 12,
+    padding: 12,
+    marginTop: 16,
+  },
+  summaryTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+    marginBottom: 8,
+  },
+  summaryText: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+    lineHeight: 20,
+  },
+  recommendationsContainer: {
+    marginTop: 16,
+  },
+  recommendationsTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+    marginBottom: 12,
+  },
+  recommendationItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 8,
+    gap: 8,
+  },
+  recommendationText: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+    flex: 1,
+    lineHeight: 18,
+  },
+  refillContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 12,
+    padding: 12,
+    marginTop: 16,
+  },
+  refillTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: Colors.textPrimary,
+    marginBottom: 8,
+  },
+  refillItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 6,
+  },
+  refillMedName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Colors.textSecondary,
+  },
+  refillInfo: {
+    fontSize: 13,
+    color: Colors.textPrimary,
+    flex: 1,
+    textAlign: 'right',
   },
 });
 
