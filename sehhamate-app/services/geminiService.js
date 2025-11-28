@@ -5,8 +5,8 @@
  * Using the same implementation as the working HTML test
  */
 
-// OpenAI API Configuration - API key hardcoded directly
-const OPENAI_API_KEY = 'process.env.EXPO_PUBLIC_OPENAI_API_KEY || process.env.OPENAI_API_KEY || ""';
+// OpenAI API Configuration - API key from environment variable
+const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY || process.env.OPENAI_API_KEY || '';
 const OPENAI_MODEL = 'gpt-4o-mini';
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
