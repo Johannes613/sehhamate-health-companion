@@ -315,13 +315,13 @@ We welcome contributions to SehhaMate! Please feel free to submit issues, featur
 
 ## 📄 License
 
-This project is part of a university course project (SWE401 - Software Engineering).
+This project is part of a university course project (SWE401 - Software Engineering) with Dr. Murad Al-Rajab
 
 ---
 
 ## 👥 Authors
 
-- **Yohannis Biniam** - [GitHub](https://github.com/Johannes613)
+- **Yohannis Adamu Biniam Negash** - [GitHub](https://github.com/Johannes613)
 
 ---
 
